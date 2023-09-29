@@ -28,15 +28,67 @@ class _ExpensesState extends State<Expenses> {
     )
   ];
 
+  void _addExpense(Expense newExpense) {
+    setState(() {
+      _registeredExpenses.add(newExpense);
+    });
+  }
+
+  void _dismissExpense(Expense expense) {
+    final index = _registeredExpenses.indexOf(expense);
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
+    ScaffoldMessenger.of(context)
+        .clearSnackBars(); // removes all visible snackbars
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: Duration(
+          seconds: 5,
+        ),
+        content: Text(
+          "Expense Deleted",
+        ),
+        action: SnackBarAction(
+          label: "Undo",
+          onPressed: () {
+            setState(
+              () {
+                // add the expense back to the list in the same position
+                _registeredExpenses.insert(index, expense);
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+      isScrollControlled: true, // make the sheet full screen
       context: context,
-      builder: (ctx) => NewExpense(),
+      builder: (ctx) => NewExpense(
+        onAddExpense: _addExpense,
+      ),
     );
   }
 
   @override
   Widget build(context) {
+    Widget _mainContent = Center(
+      child: const Text(
+        "No expenses added yet",
+      ),
+    );
+
+    if (_registeredExpenses.length > 0) {
+      _mainContent = ExpensesList(
+        expenses: _registeredExpenses,
+        onDismissItem: _dismissExpense,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -54,9 +106,7 @@ class _ExpensesState extends State<Expenses> {
           "Chart",
         ),
         Expanded(
-          child: ExpensesList(
-            expenses: _registeredExpenses,
-          ),
+          child: _mainContent,
         )
       ]),
     );
