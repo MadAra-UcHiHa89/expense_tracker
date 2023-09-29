@@ -59,6 +59,7 @@ class Chart extends StatelessWidget {
               children: [
                 for (final bucket in buckets) // alternative to map()
                   ChartBar(
+                    amount: bucket.totalAmount,
                     fill: bucket.totalAmount == 0
                         ? 0
                         : bucket.totalAmount / maxTotalAmount,

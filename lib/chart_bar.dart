@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ChartBar extends StatelessWidget {
-  const ChartBar({
-    super.key,
-    required this.fill,
-  });
+  const ChartBar({super.key, required this.fill, required this.amount});
 
   final double fill;
+  final double amount;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +16,14 @@ class ChartBar extends StatelessWidget {
         child: FractionallySizedBox(
           heightFactor: fill,
           child: DecoratedBox(
+            child: Center(
+              child: Text(
+                " \$ ${amount.toString()}",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onTertiary,
+                ),
+              ),
+            ),
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               borderRadius:
