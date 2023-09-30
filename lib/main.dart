@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:expense_tracker/expenses.dart";
+// import "package:flutter/services.dart";
 
 final kColorScheme =
     ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 96, 168, 242));
@@ -9,7 +10,11 @@ final kDarkColorScheme = ColorScheme.fromSeed(
         .dark, // by default the color scheme id genertaed for light mode , so we need to specify the brightness
     seedColor: Color.fromARGB(255, 5, 99, 125));
 
-void main() {
+void main() async {
+  // WidgetsFlutterBinding
+  //     .ensureInitialized(); // This ensures that the WidgetsBinding is initialized before we call SystemChrome.setPreferredOrientations()
+  // final fn = await SystemChrome.setPreferredOrientations(
+  //     [DeviceOrientation.portraitUp]);
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     darkTheme: ThemeData.dark().copyWith(
